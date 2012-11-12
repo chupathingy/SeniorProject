@@ -32,7 +32,7 @@ void Submit_Click(Object sender, EventArgs e)
 	</div>
 	</form>
     <div align="center">
-		<asp:Label ID="Reservations" runat="server" Visible="true" Text="" />
+		<asp:Label ID="reservationList" runat="server" Visible="true" Text="" />
        </div>
 </body>
 </html>
