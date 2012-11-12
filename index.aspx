@@ -1,4 +1,5 @@
-<%@ Page Language="C#" %>
+<%@ Page Language="C#" CodeFile="~/DBWrapper.cs" Inherits="DBWrapper"%>
+<%@ Import Namespace="seniorProjDBWrapper" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,15 +14,15 @@
     void Get_Reservations(Object sender,
                            EventArgs e)
     {
-        // Display the greeting label text.
-        Reservations.Text = "There is a reservation here";
+        String date = year.ToString() + "-" + month.ToString() + "-" + day.ToString(); 
+        Reservations.Text = getReservationByDate(date);
     }
 
 </script>
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
-    <title>Untitled Page</title>
+    <title>View Reservations</title>
 </head>
 <body>
     <table width="100%" height="100%" border="1">
@@ -34,9 +35,9 @@
     <td width="30%">
 		<form id="Form2" runat="server">
 		<div align="center">
-			Month: <input type="text" name="month"><br>
-			Day: <input type="text" name="day"><br>
-			Year: <input type="text" name="year"><br>
+			Month: <asp:TextBox id="month" runat="server" /><br>
+	        Day: <asp:TextBox id="day" runat="server" /><br>
+	        Year: <asp:TextBox id="year" runat="server" /><br>
 			<asp:Button ID="GetDate"
                 Text="View Reservations"
                 OnCLick="Get_Reservations"
