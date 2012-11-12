@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace seniorProjDBWrapper
 {
@@ -111,7 +112,7 @@ namespace seniorProjDBWrapper
 			}
 		}
 
-		public int MakeReservation (string date, string startTime, string endTime, string room, string id)
+		public int MakeReservation (string date, string startTime, string endTime, string room, string UserId)
 		{
 			int rowsInserted;
 
@@ -123,9 +124,13 @@ namespace seniorProjDBWrapper
 					endTime + "' AND endTime >= '" + startTime + "';";
 
 			string Query = "INSERT INTO reservations(date, startTime, endTime, roomName, userID) values ('" + 
-				date + "', '" + startTime + "', '" + endTime + "', '" + room + "', '" + id + "');";
+				date + "', '" + startTime + "', '" + endTime + "', '" + room + "', '" + UserId + "');";
 
 			MySqlCommand checkAvail = new MySqlCommand (Check, this.sqlConn);
+
+			//
+			//update number of reservations in date table!
+			//
 
 			try 
 			{
@@ -145,24 +150,30 @@ namespace seniorProjDBWrapper
 				Exception myExcep = new Exception("Could not make reservation. Error: " + e.Message, e);
 				throw (myExcep);
 			}
+
+			//get the unique ID number of the reservation
+			string GetIDQuery = "SELECT id FROM reservations WHERE date='" + date + "' AND startTime='" + startTime 
+				+ "' AND endTime='" + endTime + "' AND roomName='" + room + "' AND userID='" + UserId + "';";
+			MySqlCommand getID = new MySqlCommand(GetIDQuery, this.sqlConn);
+			MySqlDataReader myReader = getID.ExecuteReader();
+			return myReader.GetString(0);
 		}
 
-		public void GetReservations (string date)
+		public List<Reservation> GetReservationsByDay (string date)
 		{
 			string Query = "SELECT startTime, endTime, roomName, userID FROM reservations WHERE date='" + date + "';";
 
 			MySqlCommand getReservations = new MySqlCommand(Query, this.sqlConn);
 			MySqlDataReader myReader = getReservations.ExecuteReader();
 
+			List<Reservation> reservations = new List<Reservation>();
+
 			try
 			{
 				while(myReader.Read())
 				{
-					Console.WriteLine(myReader.GetString(0));
-					Console.WriteLine(myReader.GetString(1));
-					Console.WriteLine(myReader.GetString(2));
-					Console.WriteLine(myReader.GetString(3));
-					Console.WriteLine("\n");
+					Reservation res = new Reservation(date, myReader.GetString(0), myReader.GetString(1), myReader.GetString(2), myReader.GetString(3));
+					reservations.Add(res);
 				}
 				
 				myReader.Close();
@@ -172,11 +183,106 @@ namespace seniorProjDBWrapper
 				Exception myExcp = new Exception("Could not verify user. Error: " + e.Message, e);
 				throw(myExcp);
 			}
+
+			return reservations;
 		}
 
+		public List<Reservation> GetReservationsByUser (string id)
+		{
+			string Query = "SELECT date, startTime, endTime, roomName FROM reservations WHERE userID='" + id + "';";
+			
+			MySqlCommand getReservationsByUser = new MySqlCommand(Query, this.sqlConn);
+			MySqlDataReader myReader = getReservationsByUser.ExecuteReader();
+			
+			List<Reservation> reservations = new List<Reservation>();
+			
+			try
+			{
+				while(myReader.Read())
+				{
+					Reservation res = new Reservation(myReader.GetString(0), myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), id);
+					reservations.Add(res);
+				}
+				
+				myReader.Close();
+			}
+			catch(Exception e)
+			{
+				Exception myExcp = new Exception("Could not verify user. Error: " + e.Message, e);
+				throw(myExcp);
+			}
+			
+			return reservations;
+		}
 
+		public List<Reservation> GetReservationsByUser (string id, string startDate, string endDate)
+		{
+			string Query = "SELECT date, startTime, endTime, roomName FROM reservations WHERE userID='" 
+				+ id + "' AND date >= '" + startDate + "' AND date <= '" + endDate + "';";
 
+			MySqlCommand getReservationsByUser = new MySqlCommand(Query, this.sqlConn);
+			MySqlDataReader myReader = getReservationsByUser.ExecuteReader();
+			
+			List<Reservation> reservations = new List<Reservation>();
+			
+			try
+			{
+				while(myReader.Read())
+				{
+					Reservation res = new Reservation(myReader.GetString(0), myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), id);
+					reservations.Add(res);
+				}
+				
+				myReader.Close();
+			}
+			catch(Exception e)
+			{
+				Exception myExcp = new Exception("Could not verify user. Error: " + e.Message, e);
+				throw(myExcp);
+			}
+			
+			return reservations;
+		}
 
+		public void CancelReservation (string date, string startTime, string endTime, string room, string id)
+		{
+			string Query = "DELETE FROM reservations WHERE date='" + date + "' AND startTime='" + startTime 
+				+ "' AND endTime='" + endTime + "' AND roomName='" + room + "' AND userID='" + id + "';";
+
+			//
+			//update number of reservations in date table!
+			//
+
+			try
+			{
+				MySqlCommand deleteRes = new MySqlCommand (Query, this.sqlConn);
+			}
+			catch (Exception e)
+			{
+				Exception myExp = new Exception("Could not delete reservation. Error: " + e.Message, e);
+				throw(myExp);
+			}
+		}
+
+		public int ChangeReservation (string newDate, string newStartTime, string newEndTime, string newRoom, string id)
+		{
+			//check if change is okay first!
+			//
+			//
+
+			string Query = "UPDATE reservations SET date='" + newDate + "', startTime='" + newStartTime 
+				+ "', endTime='" + newEndTime + "' AND roomName='" + newRoom + "' WHERE id='" + id + "';";
+			
+			try
+			{
+				MySqlCommand changeRes = new MySqlCommand (Query, this.sqlConn);
+			}
+			catch (Exception e)
+			{
+				Exception myExp = new Exception("Could not delete reservation. Error: " + e.Message, e);
+				throw(myExp);
+			}
+		}
 
 
 	}
