@@ -157,7 +157,7 @@ namespace seniorProjDBWrapper
 
 			int reservationID;
 
-			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+			DBWrapper wrap = new DBWrapper("129.22.124.108", "finalproject", "devon", "devon");
 			wrap.Connect();
 			reservationID = wrap.MakeReservation(resDate, resStartTime, resEndTime, resRoom, resUserID);
 			
