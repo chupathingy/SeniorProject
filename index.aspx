@@ -1,4 +1,4 @@
-<%@ Page Language="C#" CodeFile="~/DBWrapper.cs" Inherits="DBWrapper"%>
+<%@ Page Language="C#" CodeFile="~/DBWrapper.cs" Inherits="DBWrapper" %>
 <%@ Import Namespace="seniorProjDBWrapper" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,7 +15,15 @@
                            EventArgs e)
     {
         String date = year.ToString() + "-" + month.ToString() + "-" + day.ToString(); 
-        Reservations.Text = getReservationByDate(date);
+        public void ViewReservations (string date)
+               {
+                       DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+                       wrap.Connect();
+                       List<Reservation> dayRes = wrap.GetReservationsByDay(date);
+                       
+                       wrap.Disconnect();
+
+               }
     }
 
 </script>
