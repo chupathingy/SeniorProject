@@ -30,7 +30,7 @@ namespace seniorProjDBWrapper
 			resUserID = userId;
 
 			//need to throw an exception here
-			resID = SubmitToDB();
+			resID = SubmitToDB().ToString();
 		}
 
 		public bool Cancel ()
@@ -42,11 +42,11 @@ namespace seniorProjDBWrapper
 			string today = time.ToString(dateFormat);
 
 			//check for possible errors before submitting the cancellation to DB
-			if (resDate < today) {
+			if (string.Compare(resDate, today) < 0) {
 				cancelMsg = "Unable to cancel reservation: date has already passed.";
 				return false;
 			} else if (resDate == today) {
-				if (resStartTime < time.ToString(timeFormat)) {
+				if (string.Compare(resStartTime, time.ToString(timeFormat)) < 0) {
 					cancelMsg = "Unable to cancel reservation: reserved time has already passed.";
 					return false;
 				}
@@ -76,11 +76,11 @@ namespace seniorProjDBWrapper
 			string today = time.ToString(dateFormat);
 
 			//check for possible errors before submitting the change to DB
-			if (resDate < today) {
+			if (string.Compare(resDate, today) < 0) {
 				changeMsg = "Unable to change reservation: date has already passed.";
 				return false;
 			} else if (resDate == today) {
-				if (resStartTime < time.ToString(timeFormat)) {
+				if (string.Compare(resStartTime, time.ToString(timeFormat)) < 0) {
 					changeMsg = "Unable to change reservation: reserved time has already passed.";
 					return false;
 				}
@@ -98,7 +98,7 @@ namespace seniorProjDBWrapper
 
 		public bool Change (string newStartTime, string newEndTime)
 		{
-
+			return true;
 		}
 
 		public string ChangeStatus ()
@@ -138,17 +138,17 @@ namespace seniorProjDBWrapper
 
 		public string MakeStatus ()
 		{
-
+			return null;
 		}
 
 		public bool NotifyByEmail ()
 		{
-
+			return true;
 		}
 
 		public bool ReminderByEmail ()
 		{
-
+			return true;
 		}
 
 		public int SubmitToDB ()
@@ -157,7 +157,7 @@ namespace seniorProjDBWrapper
 
 			int reservationID;
 
-			DBWrapper wrap = new DBWrapper("129.22.124.108", "finalproject", "devon", "devon");
+			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
 			wrap.Connect();
 			reservationID = wrap.MakeReservation(resDate, resStartTime, resEndTime, resRoom, resUserID);
 			
@@ -168,30 +168,36 @@ namespace seniorProjDBWrapper
 
 		public string SubmitStatus ()
 		{
-
+			return null;
 		}
 
-		public List<Reservation> ViewReservations ()
+		public void ViewReservations (string date)
 		{
-			//needs to be moved to a different class
+			//
 
+
+			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+			wrap.Connect();
+			List<Reservation> dayRes = wrap.GetReservationsByDay(date);
+			
+			wrap.Disconnect();
 
 		}
 
-		public List<Reservation> ViewReservations (string startDate, string endDate)
-		{
+		//public List<Reservation> ViewReservations (string startDate, string endDate)
+		//{
 			//needs to be moved to a different class
-		}
+		//}
 
-		public List<Reservation> ViewReservationHistory ()
-		{
+		//public List<Reservation> ViewReservationHistory ()
+		//{
 			//needs to be moved to a different class
-		}
+		//}
 
-		public List<Reservation> ViewReservationHistory (string startDate, string endDate)
-		{
+		//public List<Reservation> ViewReservationHistory (string startDate, string endDate)
+		//{
 			//needs to be moved to a different class
-		}
+		//}
 
 
 	}

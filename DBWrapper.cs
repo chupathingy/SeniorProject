@@ -38,14 +38,14 @@ namespace seniorProjDBWrapper
 		private string connStr;
 		private bool isConnected;
 
-		public static void Main ()
-		{
-			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
-			wrap.Connect();
-			wrap.GetReservations("2012-10-14");
-			Console.WriteLine(wrap.MakeReservation("2012-10-17", "12:00:00", "13:20:00", "squash1", "axl206"));
-			wrap.Disconnect();
-		}
+		//public static void Main ()
+		//{
+		//	DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+		//	wrap.Connect();
+		//	wrap.GetReservations("2012-10-14");
+		//	Console.WriteLine(wrap.MakeReservation("2012-10-17", "12:00:00", "13:20:00", "squash1", "axl206"));
+		//	wrap.Disconnect();
+		//}
 
 
 
@@ -156,7 +156,10 @@ namespace seniorProjDBWrapper
 				+ "' AND endTime='" + endTime + "' AND roomName='" + room + "' AND userID='" + UserId + "';";
 			MySqlCommand getID = new MySqlCommand(GetIDQuery, this.sqlConn);
 			MySqlDataReader myReader = getID.ExecuteReader();
-			return myReader.GetString(0);
+
+			int value;
+			int.TryParse(myReader.GetString(0), out value);
+			return value;
 		}
 
 		public List<Reservation> GetReservationsByDay (string date)
@@ -282,6 +285,8 @@ namespace seniorProjDBWrapper
 				Exception myExp = new Exception("Could not delete reservation. Error: " + e.Message, e);
 				throw(myExp);
 			}
+
+			return 1;
 		}
 
 
