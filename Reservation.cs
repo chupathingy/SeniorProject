@@ -1,205 +1,238 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
-using System.Collections.Generic;
 
-namespace seniorProjDBWrapper
+namespace FinalProject
 {
-	public class Reservation
-	{
-		public string resDate;
-		public string resStartTime;
-		public string resEndTime;
-		public string resRoom;
-		public string resUserID;
-		public string resID;
+    public class Reservation
+    {
+        //fields
+        private string resID;
+        private string resDate;
+        private string resStartTime;
+        private string resEndTime;
+        private string resRoom;
+        private string resUserID;
 
-		public string cancelMsg = null;
-		public string changeMsg = null;
-		public string makeResMsg = null;
+        private string cancelMsg = null;
+        private string changeMsg = null;
+        private string makeResMsg = null;
 
-		//constructor 
-		public Reservation (string date, string startTime, string endTime, string room, string userId)
-		{
-			resDate = date;
-			resStartTime = startTime;
-			resEndTime = endTime;
-			resRoom = room;
-			resUserID = userId;
+        //properties
+        public string ResID
+        {
+            get { return resID; }
+            set { resID = value; }
+        }
 
-			//need to throw an exception here
-			resID = SubmitToDB().ToString();
-		}
+        public string ResDate
+        {
+            get { return resDate; }
+            set { resDate = value; }
+        }
 
-		public bool Cancel ()
-		{
-			DateTime time = DateTime.Now;
-			string dateFormat = "yyyy-MM-dd";
-			string timeFormat = "HH:mm:ss";
+        public string ResStartTime
+        {
+            get { return resStartTime; }
+            set { resStartTime = value; }
+        }
 
-			string today = time.ToString(dateFormat);
+        public string ResEndTime
+        {
+            get { return resEndTime; }
+            set { resEndTime = value; }
+        }
 
-			//check for possible errors before submitting the cancellation to DB
-			if (string.Compare(resDate, today) < 0) {
-				cancelMsg = "Unable to cancel reservation: date has already passed.";
-				return false;
-			} else if (resDate == today) {
-				if (string.Compare(resStartTime, time.ToString(timeFormat)) < 0) {
-					cancelMsg = "Unable to cancel reservation: reserved time has already passed.";
-					return false;
-				}
-			}
+        public string ResRoom
+        {
+            get { return resRoom; }
+            set { resRoom = value; }
+        }
 
-			//connect to DB for cancellation
-			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
-			wrap.Connect();
-			wrap.CancelReservation(resDate, resStartTime, resEndTime, resRoom, resUserID);
-			wrap.Disconnect();
+        public string ResUserID
+        {
+            get { return resUserID; }
+            set { resUserID = value; }
+        }
 
-			cancelMsg = "Cancellation successful.";
-			return true;
-		}
+        //constructor 
+        public Reservation(string date, string startTime, string endTime, string room, string userId)
+        {
+            resDate = date;
+            resStartTime = startTime;
+            resEndTime = endTime;
+            resRoom = room;
+            resUserID = userId;
 
-		public string CancelStatus ()
-		{
-			return cancelMsg;
-		}
+            resID = SubmitToDB();
+        }
 
-		public bool Change (string newDate, string newStartTime, string newEndTime)
-		{
-			DateTime time = DateTime.Now;
-			string dateFormat = "yyyy-MM-dd";
-			string timeFormat = "HH:mm:ss";
-			
-			string today = time.ToString(dateFormat);
+        public bool Cancel()
+        {
+            DateTime time = DateTime.Now;
+            string timeFormat = "HH:mm:ss";
 
-			//check for possible errors before submitting the change to DB
-			if (string.Compare(resDate, today) < 0) {
-				changeMsg = "Unable to change reservation: date has already passed.";
-				return false;
-			} else if (resDate == today) {
-				if (string.Compare(resStartTime, time.ToString(timeFormat)) < 0) {
-					changeMsg = "Unable to change reservation: reserved time has already passed.";
-					return false;
-				}
-			}
+            string today = time.ToString("yyyy-MM-dd");
 
-			//connect to DB for change
-			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
-			wrap.Connect();
-			wrap.ChangeReservation(resDate, resStartTime, resEndTime, resRoom, resUserID);
-			wrap.Disconnect();
-			
-			cancelMsg = "Change successful.";
-			return true;
-		}
+            //check for possible time-based errors before submitting the cancellation to DB
+            if (string.Compare(resDate, today) < 0)
+            {
+                cancelMsg = "Unable to cancel reservation: date has already passed.";
+                return false;
+            }
+            else if (resDate == today)
+            {
+                if (string.Compare(resStartTime, time.ToString(timeFormat)) < 0)
+                {
+                    cancelMsg = "Unable to cancel reservation: reserved time has already passed.";
+                    return false;
+                }
+            }
 
-		public bool Change (string newStartTime, string newEndTime)
-		{
-			return true;
-		}
-
-		public string ChangeStatus ()
-		{
-			return changeMsg;
-		}
-
-		public void ConfirmPrompt ()
-		{
-
-		}
-
-		public string GetDate ()
-		{
-			return resDate;
-		}
-
-		public string GetStartTime ()
-		{
-			return resStartTime;
-		}
-
-		public string GetEndTime ()
-		{
-			return resEndTime;
-		}
-
-		public string GetRoomName ()
-		{
-			return resRoom;
-		}
-
-		public string GetUserID ()
-		{
-			return resUserID;
-		}
-
-		public string MakeStatus ()
-		{
-			return null;
-		}
-
-		public bool NotifyByEmail ()
-		{
-			return true;
-		}
-
-		public bool ReminderByEmail ()
-		{
-			return true;
-		}
-
-		public int SubmitToDB ()
-		{
-			//dbwrapper will check for errors for this method
-
-			int reservationID;
-
-			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
-			wrap.Connect();
-			reservationID = wrap.MakeReservation(resDate, resStartTime, resEndTime, resRoom, resUserID);
-			
-			wrap.Disconnect();
-
-			return reservationID;
-		}
-
-		public string SubmitStatus ()
-		{
-			return null;
-		}
-
-		public void ViewReservations (string date)
-		{
-			//
+            //check for possible user-based errors before submitting the cancellation to DB
 
 
-			DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
-			wrap.Connect();
-			List<Reservation> dayRes = wrap.GetReservationsByDay(date);
-			
-			wrap.Disconnect();
 
-		}
+            //connect to DB for cancellation
+            DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+            wrap.Connect();
+            wrap.CancelReservation(resID);
+            wrap.Disconnect();
 
-		//public List<Reservation> ViewReservations (string startDate, string endDate)
-		//{
-			//needs to be moved to a different class
-		//}
+            cancelMsg = "Cancellation successful.";
+            return true;
+        }
 
-		//public List<Reservation> ViewReservationHistory ()
-		//{
-			//needs to be moved to a different class
-		//}
+        public string CancelStatus()
+        {
+            return cancelMsg;
+        }
 
-		//public List<Reservation> ViewReservationHistory (string startDate, string endDate)
-		//{
-			//needs to be moved to a different class
-		//}
+        public bool Change(string newDate, string newStartTime, string newEndTime)
+        {
+            DateTime time = DateTime.Now;
+            string timeFormat = "HH:mm:ss";
+
+            string today = time.ToString("yyyy-MM-dd");
+
+            //check for possible errors before submitting the change to DB
+            if (string.Compare(resDate, today) < 0)
+            {
+                changeMsg = "Unable to change reservation: date has already passed.";
+                return false;
+            }
+            else if (resDate == today)
+            {
+                if (string.Compare(resStartTime, time.ToString(timeFormat)) < 0)
+                {
+                    changeMsg = "Unable to change reservation: reserved time has already passed.";
+                    return false;
+                }
+            }
+
+            //check for possible user-based errors before submitting the cancellation to DB
 
 
-	}
+            //connect to DB for change
+            DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+            wrap.Connect();
+            wrap.ChangeReservation(resID, resDate, resStartTime, resEndTime, resRoom, resUserID);
+            wrap.Disconnect();
+
+            cancelMsg = "Change successful.";
+            return true;
+        }
+
+        public bool Change(string newStartTime, string newEndTime)
+        {
+            return true;
+        }
+
+        public string ChangeStatus()
+        {
+            return changeMsg;
+        }
+
+        public void ConfirmPrompt()
+        {
+
+        }
+
+        public string GetDate()
+        {
+            return resDate;
+        }
+
+        public string GetStartTime()
+        {
+            return resStartTime;
+        }
+
+        public string GetEndTime()
+        {
+            return resEndTime;
+        }
+
+        public string GetResID()
+        {
+            return resID;
+        }
+
+        public string GetRoomName()
+        {
+            return resRoom;
+        }
+
+        public string GetUserID()
+        {
+            return resUserID;
+        }
+
+        public string MakeStatus()
+        {
+            return makeResMsg;
+        }
+
+        public bool NotifyByEmail()
+        {
+            return true;
+        }
+
+        public bool ReminderByEmail()
+        {
+            return true;
+        }
+
+        private string SubmitToDB()
+        {
+            //dbwrapper will check for errors for this method
+
+            string reservationID;
+
+            DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+            wrap.Connect();
+            reservationID = wrap.MakeReservation(resDate, resStartTime, resEndTime, resRoom, resUserID);
+
+            wrap.Disconnect();
+
+            if (reservationID == null)
+            {
+                makeResMsg = "Error in making reservation. Data not submitted to DB.";
+            }
+            else
+                makeResMsg = "Successfully made reservation: submitted to DB.";
+
+            return reservationID;
+        }
+
+        public string SubmitStatus()
+        {
+            return null;
+        }
+
+    }
 }
-
