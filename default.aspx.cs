@@ -17,12 +17,15 @@ namespace FinalProject
 
         protected void GoToProfile_Click(object sender, EventArgs e)
         {
+            string uid = caseID.Text;
+            string pswrd = password.Text;
+
             DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
             wrap.Connect();
-            bool loginCheck = wrap.VerifyLogin(caseID.Text, password.Text);
-            wrap.Disconnect();
+            bool loginCheck = wrap.VerifyLogin(uid, pswrd);
             if (loginCheck)
             {
+                wrap.UpdateUserLastLogin(uid);
                 caseID.Text = "";
                 password.Text = "";
                 Page0.Style.Add("display", "none");
@@ -32,14 +35,34 @@ namespace FinalProject
             {
                 ErrorText1.InnerText = "Incorrect Login. Please try again.";
             }
+            wrap.Disconnect();
         }
 
         protected void GoToSearch_Click(object sender, EventArgs e)
         {
-
+            Page1.Style.Add("display", "none");
+            Page2.Style.Add("display", "block");
         }
 
         protected void GoToMake_Click(object sender, EventArgs e)
+        {
+            Page1.Style.Add("display", "none");
+            Page3.Style.Add("display", "block");
+        }
+
+        protected void GetDate(object sender, EventArgs e)
+        {
+            DateLabel.Text = "Reservations for " + calendar1.SelectedDate.ToShortDateString() + ":";
+        }
+
+        protected void BackToHome_Click(object sender, EventArgs e)
+        {
+            Page2.Style.Add("display", "none");
+            Page3.Style.Add("display", "none");
+            Page1.Style.Add("display", "block");
+        }
+
+        protected void MakeNew_Click(object sender, EventArgs e)
         {
 
         }

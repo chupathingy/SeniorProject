@@ -7,6 +7,7 @@
 <head runat="server">
     <title></title>
     <script>
+
     </script>
 </head>
 <body>
@@ -19,7 +20,7 @@
         </div>
         <div>
             Password:
-            <asp:TextBox ID="password" runat="server" />
+            <asp:TextBox TextMode="Password" ID="password" runat="server" />
         </div>
         <asp:Button ID="GoToProfile" runat="server" OnClick="GoToProfile_Click" Text="Login" />
     </div>
@@ -45,11 +46,32 @@
     <asp:Button ID="GoToMake" runat="server" OnClick="GoToMake_Click" Text="Make a Reservation" />
     </div>
     <div id="Page2" runat="server" style="display:none">
-
+        Select date:
+        <asp:Calendar id="calendar1" runat="server" OnSelectionChanged="GetDate"/>
+        <asp:Label ID="DateLabel" runat="server" />
+        <asp:Button ID="Button2" runat="server" OnClick="BackToHome_Click" Text="Back" />
     </div>
     <div id="Page3" runat="server" style="display:none">
-
+        <div>
+        <asp:Label runat="server" Text="To make a reservation, please fill out all fields below:" />
+            </div>
+        <asp:Label runat="server" Text="Date" />
+        <asp:Calendar ID="reservationCalendar" runat="server" OnSelectionChanged="GetDate" />
+       <div>
+         Start Time:
+            <asp:TextBox ID="TextBoxStart" runat="server" />
+        </div>
+        <div>
+           End Time:
+            <asp:TextBox ID="TextBoxEnd" runat="server" />
+        </div>
+        <div>
+            Room:
+            <asp:TextBox ID="TextBoxRoom" runat="server" />
     </div>
+        <asp:Button ID="SubmitReservation" runat="server" OnClick="MakeNew_Click" Text="Submit" />
+        <asp:Button ID="Back_Page3" runat="server" OnClick="BackToHome_Click" Text="Back" />
+        </div>
 
 </form>
 </body>
