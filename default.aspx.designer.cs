@@ -121,6 +121,24 @@ namespace FinalProject {
         protected global::System.Web.UI.WebControls.ObjectDataSource ObjectDataSource1;
         
         /// <summary>
+        /// GridView2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridView2;
+        
+        /// <summary>
+        /// ObjectDataSource2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource ObjectDataSource2;
+        
+        /// <summary>
         /// GoToSearch control.
         /// </summary>
         /// <remarks>
@@ -148,13 +166,13 @@ namespace FinalProject {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Page2;
         
         /// <summary>
-        /// calendar1 control.
+        /// searchResCalendar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar calendar1;
+        protected global::System.Web.UI.WebControls.Calendar searchResCalendar;
         
         /// <summary>
         /// DateLabel control.
@@ -166,13 +184,49 @@ namespace FinalProject {
         protected global::System.Web.UI.WebControls.Label DateLabel;
         
         /// <summary>
-        /// Button2 control.
+        /// SearchRoomSelect control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.DropDownList SearchRoomSelect;
+        
+        /// <summary>
+        /// BackButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BackButton;
+        
+        /// <summary>
+        /// SearchButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SearchButton;
+        
+        /// <summary>
+        /// GridView3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridView3;
+        
+        /// <summary>
+        /// ObjectDataSource3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource ObjectDataSource3;
         
         /// <summary>
         /// Page3 control.
@@ -193,31 +247,40 @@ namespace FinalProject {
         protected global::System.Web.UI.WebControls.Calendar reservationCalendar;
         
         /// <summary>
-        /// TextBoxStart control.
+        /// TextBoxMakeStart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBoxStart;
+        protected global::System.Web.UI.WebControls.TextBox TextBoxMakeStart;
         
         /// <summary>
-        /// TextBoxEnd control.
+        /// TextBoxMakeEnd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBoxEnd;
+        protected global::System.Web.UI.WebControls.TextBox TextBoxMakeEnd;
         
         /// <summary>
-        /// TextBoxRoom control.
+        /// MakeRoomSelect control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBoxRoom;
+        protected global::System.Web.UI.WebControls.DropDownList MakeRoomSelect;
+        
+        /// <summary>
+        /// ErrorTextMakeRes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ErrorTextMakeRes;
         
         /// <summary>
         /// SubmitReservation control.

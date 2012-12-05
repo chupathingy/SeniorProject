@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net;
+using System.Net.Mail;
 using MySql.Data.MySqlClient;
 
 namespace FinalProject
@@ -22,7 +24,7 @@ namespace FinalProject
         private string changeMsg = null;
         private string makeResMsg = null;
 
-        //properties
+        //properties (for data binding)
         public string ResID
         {
             get { return resID; }
@@ -60,7 +62,7 @@ namespace FinalProject
         }
 
         //constructor 
-        public Reservation(string date, string startTime, string endTime, string room, string userId)
+        public Reservation(string date, string startTime, string endTime, string room, string userId, bool makeNew)
         {
             resDate = date;
             resStartTime = startTime;
@@ -68,7 +70,11 @@ namespace FinalProject
             resRoom = room;
             resUserID = userId;
 
-            resID = SubmitToDB();
+            if (makeNew)
+            {
+                resID = SubmitToDB();
+                NotifyByEmail();
+            }
         }
 
         public bool Cancel()
@@ -197,9 +203,30 @@ namespace FinalProject
             return makeResMsg;
         }
 
-        public bool NotifyByEmail()
+        private bool NotifyByEmail()
         {
-            return true;
+            try
+            {
+                string body = "This e-mail serves as a confirmation that someone has made a reservation for " +
+                    resRoom + " on " + resDate + " from " + resStartTime + " to " + resEndTime +
+                    ". <br /><br />If you did not make this reservation, you probably got hacked lolz.";
+
+                //NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
+                MailMessage notification = new MailMessage();
+                notification.From = new MailAddress("noreply@case.edu");
+                notification.To.Add(new MailAddress(resUserID + "@case.edu"));
+                notification.Subject = "You Made a Reservation at Veale!";
+                notification.Body = body;
+                notification.IsBodyHtml = true;
+                SmtpClient client = new SmtpClient("smtp.case.edu");
+                client.Send(notification);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool ReminderByEmail()

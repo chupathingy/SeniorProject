@@ -118,11 +118,13 @@ namespace FinalProject
                 + "' AND endTime='" + endTime + "' AND roomName='" + room + "' AND userID='" + UserId + "';";
 
             string UpdateResCount = "UPDATE date SET reservations=reservations+1 WHERE date='" + date + "';";
+            string UpdateRoomCount = "UPDATE room SET numberOfReservations=numberOfReservations+1 WHERE rname='" + room + "';";
 
             MySqlCommand checkAvail = new MySqlCommand(Check, this.sqlConn);
             MySqlCommand insert = new MySqlCommand(InsertQuery, this.sqlConn);
             MySqlCommand getID = new MySqlCommand(GetIDQuery, this.sqlConn);
-            MySqlCommand updateCount = new MySqlCommand(UpdateResCount, this.sqlConn);
+            MySqlCommand updateRes = new MySqlCommand(UpdateResCount, this.sqlConn);
+            MySqlCommand updateRoom = new MySqlCommand(UpdateRoomCount, this.sqlConn);
 
             try
             {
@@ -138,7 +140,8 @@ namespace FinalProject
                 }
 
                 //update number of reservations in date table
-                updateCount.ExecuteNonQuery();
+                updateRes.ExecuteNonQuery();
+                updateRoom.ExecuteNonQuery();
 
                 //get the unique ID number of the reservation
                 MySqlDataReader myReader = getID.ExecuteReader();
@@ -169,7 +172,7 @@ namespace FinalProject
             {
                 while (myReader.Read())
                 {
-                    Reservation res = new Reservation(date, myReader.GetString(0), myReader.GetString(1), myReader.GetString(2), myReader.GetString(3));
+                    Reservation res = new Reservation(date, myReader.GetString(0), myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), false);
                     reservations.Add(res);
                 }
 
@@ -186,7 +189,11 @@ namespace FinalProject
 
         public List<Reservation> GetReservationsByRoom(string date, string rm)
         {
-            string Query = "SELECT startTime, endTime, roomName, userID FROM reservations WHERE room='" + rm + "' AND date='" + date + "';";
+            string Query;
+            if(rm == "")
+                Query = "SELECT startTime, endTime, roomName, userID FROM reservations WHERE date='" + date + "';";
+            else
+                Query = "SELECT startTime, endTime, roomName, userID FROM reservations WHERE roomName='" + rm + "' AND date='" + date + "';";
 
             MySqlCommand getReservations = new MySqlCommand(Query, this.sqlConn);
             MySqlDataReader myReader = getReservations.ExecuteReader();
@@ -197,7 +204,7 @@ namespace FinalProject
             {
                 while (myReader.Read())
                 {
-                    Reservation res = new Reservation(date, myReader.GetString(0), myReader.GetString(1), myReader.GetString(2), myReader.GetString(3));
+                    Reservation res = new Reservation(date, myReader.GetString(0), myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), false);
                     reservations.Add(res);
                 }
 
@@ -214,7 +221,7 @@ namespace FinalProject
 
         public List<Reservation> GetReservationsByUser(string uid)
         {
-            string Query = "SELECT date, startTime, endTime, roomName FROM reservations WHERE userID='" + uid + "';";
+            string Query = "SELECT date, startTime, endTime, roomName FROM reservations WHERE userID='" + uid + "' ORDER BY date;";
 
             MySqlCommand getReservationsByUser = new MySqlCommand(Query, this.sqlConn);
             MySqlDataReader myReader = getReservationsByUser.ExecuteReader();
@@ -226,7 +233,7 @@ namespace FinalProject
                 while (myReader.Read())
                 {
                     string translateDate = myReader.GetDateTime(0).ToString("yyyy-MM-dd");
-                    Reservation res = new Reservation(translateDate, myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), uid);
+                    Reservation res = new Reservation(translateDate, myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), uid, false);
                     reservations.Add(res);
                 }
 
@@ -256,7 +263,7 @@ namespace FinalProject
                 while (myReader.Read())
                 {
                     string translateDate = myReader.GetDateTime(0).ToString("yyyy-MM-dd");
-                    Reservation res = new Reservation(translateDate, myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), uid);
+                    Reservation res = new Reservation(translateDate, myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), uid, false);
                     reservations.Add(res);
                 }
 
@@ -271,10 +278,40 @@ namespace FinalProject
             return reservations;
         }
 
+        public List<Reservation> GetUpcomingUserRes(string uid)
+        {
+            string Query = "SELECT date, startTime, endTime, roomName FROM reservations WHERE userID='" + uid +
+                "' AND date>'" + DateTime.Now + "' ORDER BY date;";
+
+            MySqlCommand getReservationsByUser = new MySqlCommand(Query, this.sqlConn);
+            MySqlDataReader myReader = getReservationsByUser.ExecuteReader();
+
+            List<Reservation> reservations = new List<Reservation>();
+
+            try
+            {
+                while (myReader.Read())
+                {
+                    string translateDate = myReader.GetDateTime(0).ToString("yyyy-MM-dd");
+                    Reservation res = new Reservation(translateDate, myReader.GetString(1), myReader.GetString(2), myReader.GetString(3), uid, false);
+                    reservations.Add(res);
+                }
+
+                myReader.Close();
+            }
+            catch (Exception e)
+            {
+                Exception myExcp = new Exception("Could not verify user. Error: " + e.Message, e);
+                throw (myExcp);
+            }
+
+            return reservations;
+        }
         public bool CancelReservation(string reservID)
         {
             //get needs to be executed separately first because we have to get date first
             string date;
+            string room;
             string GetResDateQuery = "SELECT * FROM reservations WHERE id='" + reservID + "';";
             MySqlCommand getResDate = new MySqlCommand(GetResDateQuery, this.sqlConn);
             try
@@ -282,6 +319,7 @@ namespace FinalProject
                 MySqlDataReader myReader = getResDate.ExecuteReader();
                 myReader.Read();
                 date = myReader.GetDateTime(1).ToString("yyyy-MM-dd");
+                room = myReader.GetString(4);
                 myReader.Close();
             }
             catch (Exception e)
@@ -292,9 +330,11 @@ namespace FinalProject
 
             //then execute rest of delete
             string UpdateResCountQuery = "UPDATE date SET reservations=reservations-1 WHERE date='" + date + "';";
+            string UpdateRoomCountQuery = "UPDATE room SET numberOfReservations=numberOfReservations-1 WHERE rname='" + room + "';";
             string DeleteQuery = "DELETE FROM reservations WHERE id='" + reservID + "';";
 
-            MySqlCommand updateCount = new MySqlCommand(UpdateResCountQuery, this.sqlConn);
+            MySqlCommand updateRes = new MySqlCommand(UpdateResCountQuery, this.sqlConn);
+            MySqlCommand updateRoom = new MySqlCommand(UpdateRoomCountQuery, this.sqlConn);
             MySqlCommand deleteRes = new MySqlCommand(DeleteQuery, this.sqlConn);
 
             try
@@ -303,7 +343,8 @@ namespace FinalProject
                 deleteRes.ExecuteNonQuery();
 
                 //update number of reservations in date table
-                updateCount.ExecuteNonQuery();
+                updateRes.ExecuteNonQuery();
+                updateRoom.ExecuteNonQuery();
             }
             catch (Exception e)
             {

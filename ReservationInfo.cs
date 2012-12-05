@@ -47,6 +47,15 @@ namespace FinalProject
             return usrRes;
         }
 
+        public List<Reservation> ViewUpcomingUserRes(string usrID)
+        {
+            DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
+            wrap.Connect();
+            List<Reservation> usrRes = wrap.GetUpcomingUserRes(usrID);
+            wrap.Disconnect();
+            return usrRes;
+        }
+
         public List<Reservation> ViewReservationHistory(string startDate, string endDate)
         {
             return null;

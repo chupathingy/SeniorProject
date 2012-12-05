@@ -52,7 +52,7 @@ namespace FinalProject
 
         protected void GetDate(object sender, EventArgs e)
         {
-            DateLabel.Text = "Reservations for " + calendar1.SelectedDate.ToShortDateString() + ":";
+            DateLabel.Text = "Reservations for " +  searchResCalendar.SelectedDate.ToShortDateString() + ":";
         }
 
         protected void BackToHome_Click(object sender, EventArgs e)
@@ -64,7 +64,10 @@ namespace FinalProject
 
         protected void MakeNew_Click(object sender, EventArgs e)
         {
+            String resDate = reservationCalendar.SelectedDate.ToString("yyyy-MM-dd");
+            Reservation res = new Reservation(resDate, TextBoxMakeStart.Text, TextBoxMakeEnd.Text, MakeRoomSelect.SelectedValue, "test", true);
 
+            ErrorTextMakeRes.InnerText = res.MakeStatus();
         }
 
     }
