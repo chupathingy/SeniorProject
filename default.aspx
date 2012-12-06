@@ -10,7 +10,7 @@
 
     </script>
 </head>
-<body>
+<body bgcolor="Gray">
 <form id="form0" runat="server">
     <!-- Login Page -->
     <div id="Page0" runat="server" style="display:none">
