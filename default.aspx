@@ -68,7 +68,7 @@
     </div>
     
     <!-- View Reservation Page -->
-    <div id="Page2" runat="server">
+    <div id="Page2" runat="server"  style="display:none">
         <table border="0" align="center">
             <tr>
                 <td>
@@ -127,36 +127,51 @@
     </div>
 
     <!-- Make Reservation Page -->
-    <div id="Page3" runat="server" style="display:none">
-        <div>
-        <asp:Label ID="Label1" runat="server" Text="To make a reservation, please fill out all fields below:" />
-            </div>
-        <asp:Label ID="Label2" runat="server" Text="Date" />
-        <asp:Calendar runat="server" ID="reservationCalendar" OnSelectionChanged="GetDate" />
-       <div>
-         Start Time:
-            <asp:TextBox runat="server" ID="TextBoxMakeStart" />
-        </div>
-        <div>
-           End Time:
-            <asp:TextBox runat="server" ID="TextBoxMakeEnd" />
-        </div>
-        <div>
-            Room:
-            <asp:DropDownList runat="server" ID="MakeRoomSelect">
-                <asp:ListItem Text="--Select One--" Value="" />
-                <asp:ListItem value="racquetball1">Racquetball 1</asp:ListItem>
-                <asp:ListItem value="racquetball2">Racquetball 2</asp:ListItem>
-                <asp:ListItem value="racquetball3">Racquetball 3</asp:ListItem>
-                <asp:ListItem value="racquetball4">Racquetball 4</asp:ListItem>
-                <asp:ListItem value="racquetball5">Racquetball 5</asp:ListItem>
-                <asp:ListItem value="squash1">Squash 1</asp:ListItem>
-                <asp:ListItem value="squash2">Squash 2</asp:ListItem>
-            </asp:DropDownList>
-        </div>
-        <p id="ErrorTextMakeRes" runat="server" style="color:red"/>
-        <asp:Button ID="SubmitReservation" runat="server" OnClick="MakeNew_Click" Text="Submit" />
-        <asp:Button ID="Back_Page3" runat="server" OnClick="BackToHome_Click" Text="Back" />
+    <div id="Page3" runat="server">
+
+            <table align="center">
+                <tr>
+                    <td align="center">
+                        <asp:Label ID="Label1" runat="server" Text="To make a reservation, please fill out all fields below:" />
+                            <div><asp:Label ID="Label2" runat="server" Text="Date" /></div>
+                            <asp:Calendar runat="server" ID="reservationCalendar" OnSelectionChanged="GetDate" 
+                                ForeColor="#000099" TodayDayStyle-BackColor="#000099" TodayDayStyle-ForeColor="White" 
+                                SelectedDayStyle-BackColor="#000099" SelectedDayStyle-BorderColor="White" OtherMonthDayStyle-Wrap="false" Height="249px" Width="355px"
+                                TitleStyle-BackColor="#000099" TitleStyle-ForeColor="White"/>
+                    </td>
+                    <td align="center">
+                        <div>
+                            Start Time:
+                            <asp:TextBox runat="server" ID="TextBoxMakeStart" />
+                        </div>
+                        <div>
+                            End Time:
+                            <asp:TextBox runat="server" ID="TextBoxMakeEnd" />
+                        </div>
+                        <div>
+                            Room:
+                            <asp:DropDownList runat="server" ID="MakeRoomSelect">
+                                <asp:ListItem Text="--Select One--" Value="" />
+                                <asp:ListItem value="racquetball1">Racquetball 1</asp:ListItem>
+                                <asp:ListItem value="racquetball2">Racquetball 2</asp:ListItem>
+                                <asp:ListItem value="racquetball3">Racquetball 3</asp:ListItem>
+                                <asp:ListItem value="racquetball4">Racquetball 4</asp:ListItem>
+                                <asp:ListItem value="racquetball5">Racquetball 5</asp:ListItem>
+                                <asp:ListItem value="squash1">Squash 1</asp:ListItem>
+                                <asp:ListItem value="squash2">Squash 2</asp:ListItem>
+                            </asp:DropDownList>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="center">
+                    <p id="ErrorTextMakeRes" runat="server" style="color:red"/>
+                    <asp:Button ID="SubmitReservation" runat="server" OnClick="MakeNew_Click" Text="Submit" />
+                    <asp:Button ID="Back_Page3" runat="server" OnClick="BackToHome_Click" Text="Back" />
+                    </td>
+                </tr>
+            </table>
     </div>
 
 </form>
