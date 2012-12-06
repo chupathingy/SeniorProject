@@ -14,7 +14,7 @@ namespace FinalProject
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         protected void GoToProfile_Click(object sender, EventArgs e)
@@ -22,22 +22,22 @@ namespace FinalProject
             string uid = caseID.Text;
             string pswrd = password.Text;
 
-            DBWrapper wrap = new DBWrapper("localhost", "finalproject", "devon", "devon");
-            wrap.Connect();
-            bool loginCheck = wrap.VerifyLogin(uid, pswrd);
-            if (loginCheck)
-            {
-                wrap.UpdateUserLastLogin(uid);
+//            DBWrapper wrap = new DBWrapper("172.20.4.155", "finalproject", "devon", "devon");
+//            wrap.Connect();
+//            bool loginCheck = wrap.VerifyLogin(uid, pswrd);
+//            if (loginCheck)
+//            {
+//                wrap.UpdateUserLastLogin(uid);
                 password.Text = "";
                 Page0.Style.Add("display", "none");
                 Page1.Style.Add("display", "block");
                 GridView2.Style.Add("display", "none");
-            }
-            else
-            {
+//            }
+//            else
+//            {
                 ErrorText1.InnerText = "Incorrect Login. Please try again.";
-            }
-            wrap.Disconnect();
+//            }
+//            wrap.Disconnect();
         }
 
         protected void GoToSearch_Click(object sender, EventArgs e)
@@ -83,9 +83,9 @@ namespace FinalProject
         protected void MakeNew_Click(object sender, EventArgs e)
         {
             String resDate = reservationCalendar.SelectedDate.ToString("yyyy-MM-dd");
-            Reservation res = new Reservation(resDate, TextBoxMakeStart.Text, TextBoxMakeEnd.Text, MakeRoomSelect.SelectedValue, "test", true);
+//            Reservation res = new Reservation(resDate, TextBoxMakeStart.Text, TextBoxMakeEnd.Text, MakeRoomSelect.SelectedValue, "test", true);
 
-            ErrorTextMakeRes.InnerText = res.MakeStatus();
+//            ErrorTextMakeRes.InnerText = res.MakeStatus();
         }
 
         /******************Page 1 Handlers**********************/
@@ -100,9 +100,9 @@ namespace FinalProject
             GridView1.SelectedRow.BackColor = System.Drawing.Color.LightBlue;
             // Get the currently selected row using the SelectedRow property.
             GridViewRow row = GridView1.SelectedRow;
-            
+
             // Make a reservation object to be interacted with
-            pageOneSelectedRes = new Reservation(row.Cells[0].Text, row.Cells[1].Text, row.Cells[2].Text, row.Cells[3].Text, caseID.Text, false);
+//            pageOneSelectedRes = new Reservation(row.Cells[0].Text, row.Cells[1].Text, row.Cells[2].Text, row.Cells[3].Text, caseID.Text, false);
 
 
             //prompt available options for this reservation object? Currently Buttons displayed statically
@@ -117,9 +117,9 @@ namespace FinalProject
 
         protected void CancelRes_Click(object sender, EventArgs e)
         {
-            pageOneSelectedRes.Cancel();
+//            pageOneSelectedRes.Cancel();
 
-            ErrorText2.InnerText = pageOneSelectedRes.CancelStatus();
+//            ErrorText2.InnerText = pageOneSelectedRes.CancelStatus();
 
             //need to update the GridView thingy
         }

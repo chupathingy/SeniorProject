@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
     <script>
 
@@ -69,50 +69,69 @@
     
     <!-- View Reservation Page -->
     <div id="Page2" runat="server">
-        Select date:
-        <asp:Calendar id="searchResCalendar" runat="server" OnSelectionChanged="GetDate"/>
-        <asp:Label ID="DateLabel" runat="server" />
-        <div>
-            Room:
-            <asp:DropDownList runat="server" ID="SearchRoomSelect">
-                <asp:ListItem Text="--Select One--" Value="" />
-                <asp:ListItem value="racquetball1">Racquetball 1</asp:ListItem>
-                <asp:ListItem value="racquetball2">Racquetball 2</asp:ListItem>
-                <asp:ListItem value="racquetball3">Racquetball 3</asp:ListItem>
-                <asp:ListItem value="racquetball4">Racquetball 4</asp:ListItem>
-                <asp:ListItem value="racquetball5">Racquetball 5</asp:ListItem>
-                <asp:ListItem value="squash1">Squash 1</asp:ListItem>
-                <asp:ListItem value="squash2">Squash 2</asp:ListItem>
-            </asp:DropDownList>
-        </div>
-        <div>
-            <asp:Button ID="BackButton" runat="server" OnClick="BackToHome_Click" Text="Back" />
-            <asp:Button ID="SearchButton" runat="server" Text="Search" OnClick="SearchButton_Click" />
-        </div>
-        <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False">
-            <Columns>
-                <asp:BoundField DataField="ResDate" HeaderText="ResDate" SortExpression="ResDate" />
-                <asp:BoundField DataField="ResStartTime" HeaderText="ResStartTime" SortExpression="ResStartTime" />
-                <asp:BoundField DataField="ResEndTime" HeaderText="ResEndTime" SortExpression="ResEndTime" />
-                <asp:BoundField DataField="ResRoom" HeaderText="ResRoom" SortExpression="ResRoom" />
-            </Columns>
-        </asp:GridView>
-        <!--<asp:ObjectDataSource ID="ObjectDataSource3" runat="server" SelectMethod="ViewReservationsByRoom" TypeName="FinalProject.ReservationInfo">
-            <SelectParameters>
-                <asp:ControlParameter ControlID="DateLabel" Name="date" PropertyName="Text" Type="String" />
-                <asp:ControlParameter ControlID="SearchRoomSelect" Name="rm" PropertyName="SelectedValue" Type="String" />
-            </SelectParameters>
-        </asp:ObjectDataSource>-->
-        <p id="tests" runat="server"></p>
-    
+        <table border="0" align="center">
+            <tr>
+                <td>
+                    <asp:Label ID="Label3" runat="server" Text="Select date:" />
+                    <asp:Calendar id="searchResCalendar" runat="server" OnSelectionChanged="GetDate"
+                        ForeColor="#000099" TodayDayStyle-BackColor="#000099" TodayDayStyle-ForeColor="White" 
+                        SelectedDayStyle-BackColor="#000099" SelectedDayStyle-BorderColor="White" OtherMonthDayStyle-Wrap="false" Height="249px" Width="355px"
+                        TitleStyle-BackColor="#000099" TitleStyle-ForeColor="White">
+                        <OtherMonthDayStyle Wrap="False" />
+                        <SelectedDayStyle BackColor="#000099" BorderColor="White" />
+                        <TodayDayStyle BackColor="#000099" ForeColor="White" />
+                    </asp:Calendar>
+                </td>
+                <td>
+                    <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False">
+                        <Columns>
+                            <asp:BoundField DataField="ResDate" HeaderText="ResDate" SortExpression="ResDate" />
+                            <asp:BoundField DataField="ResStartTime" HeaderText="ResStartTime" SortExpression="ResStartTime" />
+                            <asp:BoundField DataField="ResEndTime" HeaderText="ResEndTime" SortExpression="ResEndTime" />
+                            <asp:BoundField DataField="ResRoom" HeaderText="ResRoom" SortExpression="ResRoom" />
+                        </Columns>
+                     </asp:GridView>
+                     <!--<asp:ObjectDataSource ID="ObjectDataSource3" runat="server" SelectMethod="ViewReservationsByRoom" TypeName="FinalProject.ReservationInfo">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="DateLabel" Name="date" PropertyName="Text" Type="String" />
+                            <asp:ControlParameter ControlID="SearchRoomSelect" Name="rm" PropertyName="SelectedValue" Type="String" />
+                        </SelectParameters>
+                    </asp:ObjectDataSource>-->
+                    <p id="tests" runat="server"></p>  
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                    Room:
+                    <asp:DropDownList runat="server" ID="SearchRoomSelect">
+                            <asp:ListItem Text="--Select One--" Value="" />
+                            <asp:ListItem value="racquetball1">Racquetball 1</asp:ListItem>
+                            <asp:ListItem value="racquetball2">Racquetball 2</asp:ListItem>
+                            <asp:ListItem value="racquetball3">Racquetball 3</asp:ListItem>
+                            <asp:ListItem value="racquetball4">Racquetball 4</asp:ListItem>
+                            <asp:ListItem value="racquetball5">Racquetball 5</asp:ListItem>
+                            <asp:ListItem value="squash1">Squash 1</asp:ListItem>
+                            <asp:ListItem value="squash2">Squash 2</asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                    <div>
+                         <asp:Button ID="BackButton" runat="server" OnClick="BackToHome_Click" Text="Back" />
+                         <asp:Button ID="SearchButton" runat="server" Text="Search" OnClick="SearchButton_Click" />
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <!-- Make Reservation Page -->
     <div id="Page3" runat="server" style="display:none">
         <div>
-        <asp:Label runat="server" Text="To make a reservation, please fill out all fields below:" />
+        <asp:Label ID="Label1" runat="server" Text="To make a reservation, please fill out all fields below:" />
             </div>
-        <asp:Label runat="server" Text="Date" />
+        <asp:Label ID="Label2" runat="server" Text="Date" />
         <asp:Calendar runat="server" ID="reservationCalendar" OnSelectionChanged="GetDate" />
        <div>
          Start Time:
