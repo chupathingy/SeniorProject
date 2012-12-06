@@ -100,7 +100,7 @@ namespace FinalProject
             }
 
             //check for possible user-based errors before submitting the cancellation to DB
-
+            // 12/5/12 May not need to anymore
 
 
             //connect to DB for cancellation
@@ -110,6 +110,7 @@ namespace FinalProject
             wrap.Disconnect();
 
             cancelMsg = "Cancellation successful.";
+            NotifyCancelByEmail();
             return true;
         }
 
@@ -209,7 +210,7 @@ namespace FinalProject
             {
                 string body = "This e-mail serves as a confirmation that someone has made a reservation for " +
                     resRoom + " on " + resDate + " from " + resStartTime + " to " + resEndTime +
-                    ". <br /><br />If you did not make this reservation, you probably got hacked lolz.";
+                    " under your name. <br /><br />If you did not make this reservation, you probably got hacked lolz.";
 
                 //NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
                 MailMessage notification = new MailMessage();
@@ -229,6 +230,31 @@ namespace FinalProject
             }
         }
 
+        private bool NotifyCancelByEmail()
+        {
+            try
+            {
+                string body = "This e-mail serves as a confirmation that someone has cancelled your reservation for " +
+                    resRoom + " on " + resDate + " from " + resStartTime + " to " + resEndTime +
+                    ". <br /><br />If you did not cancel this reservation, you probably got hacked lolz.";
+
+                //NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
+                MailMessage notification = new MailMessage();
+                notification.From = new MailAddress("noreply@case.edu");
+                notification.To.Add(new MailAddress(resUserID + "@case.edu"));
+                notification.Subject = "Your Veale Reservation Has Been Cancelled";
+                notification.Body = body;
+                notification.IsBodyHtml = true;
+                SmtpClient client = new SmtpClient("smtp.case.edu");
+                client.Send(notification);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public bool ReminderByEmail()
         {
             return true;

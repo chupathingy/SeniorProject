@@ -14,7 +14,7 @@
 <form id="form0" runat="server">
     <!-- Login Page -->
     <div id="Page0" runat="server" style="display:none">
-        <div><p id="ErrorText1" runat="server" style="color:red"/></div>
+        <p id="ErrorText1" runat="server" style="color:red"/>
         <div>
             Case ID:
             <asp:TextBox ID="caseID" runat="server" />
@@ -27,12 +27,10 @@
     </div>
 
     <!-- Profile Page -->
-    <div id="Page1" runat="server">
-        Enter your name:
-        <asp:TextBox id="txt1" runat="server" />
-        <asp:Button ID="Button1" Text="See All Reservations" runat="server" OnClick="Button1_Click" />
-        <asp:Label id="label1" runat="server" text="label"></asp:Label>
-        <asp:GridView ID="GridView1" runat="server" DataSourceID="ObjectDataSource1" AutoGenerateColumns="False">
+    <div id="Page1" runat="server" style="display:none">
+        Hello User!
+        <p><asp:Button ID="Button1" Text="See All Reservations" runat="server" OnClick="Button1_Click" /></p>
+        <asp:GridView ID="GridView1" runat="server" DataSourceID="ObjectDataSource1" AutoGenerateColumns="False" AutoGenerateSelectButton="true" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
                 <asp:BoundField DataField="ResDate" HeaderText="ResDate" SortExpression="ResDate" />
                 <asp:BoundField DataField="ResStartTime" HeaderText="ResStartTime" SortExpression="ResStartTime" />
@@ -45,7 +43,7 @@
                 <asp:ControlParameter ControlID="caseID" Name="usrID" PropertyName="Text" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
-        <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" DataSourceID="ObjectDataSource2">
+        <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" DataSourceID="ObjectDataSource2" AutoGenerateSelectButton="true">
             <Columns>
                 <asp:BoundField DataField="ResDate" HeaderText="ResDate" SortExpression="ResDate" />
                 <asp:BoundField DataField="ResStartTime" HeaderText="ResStartTime" SortExpression="ResStartTime" />
@@ -55,15 +53,22 @@
         </asp:GridView>
         <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="ViewReservationsByUser" TypeName="FinalProject.ReservationInfo">
             <SelectParameters>
-                <asp:ControlParameter ControlID="txt1" Name="usrID" PropertyName="Text" Type="String" />
+                <asp:ControlParameter ControlID="caseID" Name="usrID" PropertyName="Text" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
-    <asp:Button ID="GoToSearch" runat="server" OnClick="GoToSearch_Click" Text="Search Available Reservations" />
-    <asp:Button ID="GoToMake" runat="server" OnClick="GoToMake_Click" Text="Make a Reservation" />
+        <div>
+            <asp:Button ID="ChangeRes" runat="server" Text="Change Reservation" OnClick="ChangeRes_Click"/>
+            <asp:Button ID="CancelRes" runat="server" Text="Cancel Reservation" OnClick="CancelRes_Click"/>
+        </div>
+        <div>
+            <asp:Button ID="GoToSearch" runat="server" OnClick="GoToSearch_Click" Text="Search Available Reservations" />
+            <asp:Button ID="GoToMake" runat="server" OnClick="GoToMake_Click" Text="Make a Reservation" />
+        </div>
+        <p id="ErrorText2" runat="server" style="color:red"/>
     </div>
     
     <!-- View Reservation Page -->
-    <div id="Page2" runat="server" style="display:none">
+    <div id="Page2" runat="server">
         Select date:
         <asp:Calendar id="searchResCalendar" runat="server" OnSelectionChanged="GetDate"/>
         <asp:Label ID="DateLabel" runat="server" />
@@ -82,9 +87,9 @@
         </div>
         <div>
             <asp:Button ID="BackButton" runat="server" OnClick="BackToHome_Click" Text="Back" />
-            <asp:Button ID="SearchButton" runat="server" Text="Search" />
+            <asp:Button ID="SearchButton" runat="server" Text="Search" OnClick="SearchButton_Click" />
         </div>
-        <asp:GridView ID="GridView3" runat="server" DataSourceID="ObjectDataSource3" AutoGenerateColumns="False">
+        <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False">
             <Columns>
                 <asp:BoundField DataField="ResDate" HeaderText="ResDate" SortExpression="ResDate" />
                 <asp:BoundField DataField="ResStartTime" HeaderText="ResStartTime" SortExpression="ResStartTime" />
@@ -92,15 +97,13 @@
                 <asp:BoundField DataField="ResRoom" HeaderText="ResRoom" SortExpression="ResRoom" />
             </Columns>
         </asp:GridView>
-    
-    
-        <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" SelectMethod="ViewReservationsByRoom" TypeName="FinalProject.ReservationInfo">
+        <!--<asp:ObjectDataSource ID="ObjectDataSource3" runat="server" SelectMethod="ViewReservationsByRoom" TypeName="FinalProject.ReservationInfo">
             <SelectParameters>
-                <asp:ControlParameter ControlID="searchResCalendar" Name="date" PropertyName="SelectedDate" Type="String" />
+                <asp:ControlParameter ControlID="DateLabel" Name="date" PropertyName="Text" Type="String" />
                 <asp:ControlParameter ControlID="SearchRoomSelect" Name="rm" PropertyName="SelectedValue" Type="String" />
             </SelectParameters>
-        </asp:ObjectDataSource>
-    
+        </asp:ObjectDataSource>-->
+        <p id="tests" runat="server"></p>
     
     </div>
 

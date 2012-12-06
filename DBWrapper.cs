@@ -281,7 +281,7 @@ namespace FinalProject
         public List<Reservation> GetUpcomingUserRes(string uid)
         {
             string Query = "SELECT date, startTime, endTime, roomName FROM reservations WHERE userID='" + uid +
-                "' AND date>'" + DateTime.Now + "' ORDER BY date;";
+                "' AND date>'" + DateTime.Now.ToString("yyyy-MM-dd") +"' ORDER BY date;";
 
             MySqlCommand getReservationsByUser = new MySqlCommand(Query, this.sqlConn);
             MySqlDataReader myReader = getReservationsByUser.ExecuteReader();
