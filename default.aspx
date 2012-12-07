@@ -15,23 +15,42 @@
     
 <form id="form0" runat="server">
     <!-- Login Page -->
-    <div id="Page0" runat="server" style="display:none">
+    <div id="Page0" runat="server" style="display:none" >
+        
+        <table border="2" align="center" bordercolor="Black">
+            <tr>
+                <td align="center">
+                    <img src="caselogo.gif" alt="">
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                        <asp:Label runat="server" Text="Case ID:" />
+                        <asp:TextBox ID="caseID" runat="server" />
+                    <div>
+                        <asp:Label runat="server" Text="Password:" />
+                        <asp:TextBox TextMode="Password" ID="password" runat="server" />
+                    </div>
+                    <asp:Button ID="GoToProfile" runat="server" OnClick="GoToProfile_Click" Text="Login" Align="center"/>
+
+                </td>
+            </tr>
+        </table>
         <p id="ErrorText1" runat="server" style="color:red"/>
-        <div>
-            Case ID:
-            <asp:TextBox ID="caseID" runat="server" />
-        </div>
-        <div>
-            Password:
-            <asp:TextBox TextMode="Password" ID="password" runat="server" />
-        </div>
-        <asp:Button ID="GoToProfile" runat="server" OnClick="GoToProfile_Click" Text="Login" />
     </div>
 
     <!-- Profile Page -->
-    <div id="Page1" runat="server" style="display:none">
-        Hello User!
-        <p><asp:Button ID="Button1" Text="See All Reservations" runat="server" OnClick="Button1_Click" /></p>
+    <div id="Page1" runat="server">
+        <table align="center">
+            <tr>
+                <td align="center" colspan="2">
+                    <p id="greeting" Text="Hello User!"/>
+                    <p><asp:Button ID="Button1" Text="See All Reservations" runat="server" OnClick="Button1_Click" /></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    
         <asp:GridView ID="GridView1" runat="server" DataSourceID="ObjectDataSource1" AutoGenerateColumns="False" AutoGenerateSelectButton="true" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
                 <asp:BoundField DataField="ResDate" HeaderText="ResDate" SortExpression="ResDate" />
@@ -58,19 +77,33 @@
                 <asp:ControlParameter ControlID="caseID" Name="usrID" PropertyName="Text" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
-        <div>
-            <asp:Button ID="ChangeRes" runat="server" Text="Change Reservation" OnClick="ChangeRes_Click"/>
-            <asp:Button ID="CancelRes" runat="server" Text="Cancel Reservation" OnClick="CancelRes_Click"/>
-        </div>
-        <div>
-            <asp:Button ID="GoToSearch" runat="server" OnClick="GoToSearch_Click" Text="Search Available Reservations" />
-            <asp:Button ID="GoToMake" runat="server" OnClick="GoToMake_Click" Text="Make a Reservation" />
-        </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <asp:Button ID="ChangeRes" runat="server" Text="Change Reservation" OnClick="ChangeRes_Click"/>
+                </td>
+                <td>
+                    <asp:Button ID="CancelRes" runat="server" Text="Cancel Reservation" OnClick="CancelRes_Click"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <asp:Button ID="GoToSearch" runat="server" OnClick="GoToSearch_Click" Text="Search Available Reservations" />
+                </td>
+                <td>
+                    <asp:Button ID="GoToMake" runat="server" OnClick="GoToMake_Click" Text="Make a Reservation" />
+                </td>
+            </tr>
+        </table>
+        
+            
         <p id="ErrorText2" runat="server" style="color:red"/>
     </div>
     
     <!-- View Reservation Page -->
-    <div id="Page2" runat="server"  >
+    <div id="Page2" runat="server" style="display:none" >
         <section class="container">
             <div id="card">
                 <figure class="front">1</figure>
