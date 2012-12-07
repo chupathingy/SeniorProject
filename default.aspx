@@ -5,12 +5,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
+    <link rel="stylesheet" type="text/css" href="3dtransform.css" />
     <title></title>
     <script>
 
     </script>
 </head>
 <body bgcolor="Gray">
+    
 <form id="form0" runat="server">
     <!-- Login Page -->
     <div id="Page0" runat="server" style="display:none">
@@ -68,7 +70,14 @@
     </div>
     
     <!-- View Reservation Page -->
-    <div id="Page2" runat="server"  style="display:none">
+    <div id="Page2" runat="server"  >
+        <section class="container">
+            <div id="card">
+                <figure class="front">1</figure>
+                <figure class="back">2</figure>
+            </div>
+        </section>
+
         <table border="0" align="center">
             <tr>
                 <td>
@@ -127,7 +136,7 @@
     </div>
 
     <!-- Make Reservation Page -->
-    <div id="Page3" runat="server">
+    <div id="Page3" runat="server" style="display:none">
 
             <table align="center">
                 <tr>
